@@ -1,40 +1,66 @@
+public class ERyder {
+    public static final String COMPANY_NAME = "ERyder";
+    public static final double BASE_FARE = 1.0;
+    public static final double PER_MINUTE_FARE = 0.5;
 
-class ERyder{
+    private final String LINKED_ACCOUNT;
+    private final String LINKED_PHONE_NUMBER;
+
     private int bikeID;
     private int batteryLevel;
     private boolean isAvailable;
     private double kmDriven;
-    
-    public ERyder() {
-        this.bikeID = 0;
-        this.batteryLevel = 0;
-        this.isAvailable = false;
-        this.kmDriven = 0.0;
-    }
+    private int totalUsageInMinutes;
+    private double totalFare;
 
-   
     public ERyder(int bikeID, int batteryLevel, boolean isAvailable, double kmDriven) {
         this.bikeID = bikeID;
         this.setBatteryLevel(batteryLevel);
         this.isAvailable = isAvailable;
         this.kmDriven = kmDriven;
+        this.LINKED_ACCOUNT = "default_user";
+        this.LINKED_PHONE_NUMBER = "111-111-1111";
     }
 
+    public ERyder(int bikeID, int batteryLevel, boolean isAvailable, double kmDriven,
+                  String linkedAccount, String linkedPhoneNumber) {
+        this.bikeID = bikeID;
+        this.setBatteryLevel(batteryLevel);
+        this.isAvailable = isAvailable;
+        this.kmDriven = kmDriven;
+        this.LINKED_ACCOUNT = linkedAccount;
+        this.LINKED_PHONE_NUMBER = linkedPhoneNumber;
+    }
 
-    public void ride(){
+    public void ride() {
         if (this.batteryLevel > 0 && this.isAvailable) {
-            System.out.println("自行车可用，可以骑行。");
+            System.out.println("Bike is available, can ride.");
         } else {
-            System.out.println("自行车不可用，无法骑行。");
+            System.out.println("Bike is unavailable, cannot ride.");
         }
     }
 
     public void printBikeDetails() {
-        System.out.println("自行车ID: " + this.bikeID);
-        System.out.println("电池电量: " + this.batteryLevel + "%");
-        System.out.println("是否可用: " + (this.isAvailable ? "是" : "否"));
-        System.out.println("总行驶距离: " + this.kmDriven + " 公里");
-        System.out.println("------------------------");
+        System.out.println("Bike ID: " + this.bikeID);
+        System.out.println("Battery Level: " + this.batteryLevel + "%");
+        System.out.println("Is Available: " + (this.isAvailable ? "Yes" : "No"));
+        System.out.println("Total Distance Driven: " + this.kmDriven + " km");
+        System.out.println("------------------------------");
+    }
+
+    public void printRideDetails(int usageInMinutes) {
+        this.totalUsageInMinutes = usageInMinutes;
+        this.totalFare = calculateFare(usageInMinutes);
+        System.out.println("Linked Account: " + LINKED_ACCOUNT);
+        System.out.println("Linked Phone Number: " + LINKED_PHONE_NUMBER);
+        System.out.println("Bike ID: " + bikeID);
+        System.out.println("Usage in Minutes: " + totalUsageInMinutes);
+        System.out.println("Total Fare: $" + totalFare);
+        System.out.println("------------------------------");
+    }
+
+    private double calculateFare(int usageInMinutes) {
+        return BASE_FARE + (PER_MINUTE_FARE * usageInMinutes);
     }
 
     public int getBikeID() {
@@ -53,7 +79,7 @@ class ERyder{
         if (batteryLevel >= 0 && batteryLevel <= 100) {
             this.batteryLevel = batteryLevel;
         } else {
-            System.out.println("错误：电池电量必须在0到100之间。设置失败。");
+            System.out.println("Error: Battery level must be between 0 and 100. Setting failed.");
         }
     }
 
@@ -72,21 +98,12 @@ class ERyder{
     public void setKmDriven(double kmDriven) {
         this.kmDriven = kmDriven;
     }
-}
 
-public class Main {
     public static void main(String[] args) {
-       
-        ERyder bike1 = new ERyder();
-        System.out.println("自行车1的初始信息：");
-        bike1.printBikeDetails();
-        ERyder bike2 = new ERyder(1001, 80, true, 150.5);
-        System.out.println("尝试骑行车2：");
-        bike2.ride();
-        System.out.println("自行车2的详细信息：");
-        bike2.printBikeDetails();
-        System.out.println("尝试将自行车2的电量设置为150%：");
-        bike2.setBatteryLevel(150);
-        bike2.printBikeDetails();
+        ERyder bike1 = new ERyder(1, 1, true, 1.0);
+        ERyder bike2 = new ERyder(2, 2, true, 2.0, "user_1", "222-222-2222");
+
+        bike1.printRideDetails(1);
+        bike2.printRideDetails(2);
     }
 }
