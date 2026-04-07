@@ -7,6 +7,7 @@ public class AdminPanel {
     private List<RegisteredUsers> registeredUserListArrayList = new ArrayList<>();
     private Scanner sc = new Scanner(System.in);
 
+
     public void userManagementOptions() {
         while (true) {
             System.out.println("Welcome to E-Ryder Admininstrator Panel");
@@ -16,9 +17,12 @@ public class AdminPanel {
             System.out.println("3.Remove Registered Users");
             System.out.println("4.Update Registered Users");
             System.out.println("5.EXIT");
+            System.out.println("6.Demo the Bike Rental System");
+            System.out.println("7.View Queue");
+            System.out.println("8.Update Queue");
 
             if (!sc.hasNextInt()) {
-                System.out.println("Invalid choice.Please try again (enter a number 1-5)");
+                System.out.println("Invalid choice.Please try again (enter a number 1-6)");
                 sc.next();
                 continue;
             }
@@ -37,7 +41,25 @@ public class AdminPanel {
                 System.out.println("Exiting program...");
                 sc.close();
                 System.exit(0);
-            } else {
+            } 
+            else if(num==6){
+                BikeRental bikeRental=new BikeRental();
+                bikeRental.simulateApplicationlnput();
+            }
+            else if(num==7){
+                ERyderLog log=new ERyderLog(null, null, null);
+                    ERyderLog log1=new ERyderLog("1","test",log.getDateTime());
+                log.pushLog("1", "test");
+                log.viewSystemLogs();
+            }
+            else if(num==8){
+                ERyderLog log=new ERyderLog(null, null, null);
+                ERyderLog log1=new ERyderLog("1","test",log.getDateTime());
+                log.pushLog("1", "test");
+                log.viewSystemLogs();
+            }
+
+            else {
                 System.out.println("Invalid choice.Please try again");
             }
         }
@@ -65,7 +87,9 @@ public class AdminPanel {
             String cvv = sc.nextLine();
             System.out.println("userType");
             String userType = sc.nextLine();
-
+            UserService userService = new UserService();
+           RegisteredUsers newUser =userService.addUser(userType, name, emailAddress, dateOfBirth, Long.parseLong(cardNumber), cardProvider, cardExpiryDate, Integer.parseInt(cvv));
+            RentalService.simulateApplicationInput(newUser);
             System.out.println("enter your last three trips");
             String[] lastThreeTrips = new String[3];
             for (int j = 0; j < 3; j++) {
@@ -90,10 +114,10 @@ public class AdminPanel {
                 lastThreeTrips[j] = trip.toString();
             }
 
-            RegisteredUsers newUser = new RegisteredUsers(name, emailAddress, dateOfBirth,
+            RegisteredUsers newUser1 = new RegisteredUsers(name, emailAddress, dateOfBirth,
                     Long.parseLong(cardNumber), cardProvider, cardExpiryDate,
                     Integer.parseInt(cvv), userType, lastThreeTrips);
-            registeredUserListArrayList.add(newUser);
+            registeredUserListArrayList.add(newUser1);
             System.out.println("User added successfully!");
         }
     }
@@ -117,7 +141,6 @@ public class AdminPanel {
                 for (int a = 0; a < trips.length; a++) {
                     System.out.println("threetrips:" + trips[a]);
                 }
-                System.out.println("-------------------");
             }
         }
     }
@@ -204,4 +227,5 @@ public class AdminPanel {
 
         System.out.println("User updated successfully!");
     }
+    
 }
